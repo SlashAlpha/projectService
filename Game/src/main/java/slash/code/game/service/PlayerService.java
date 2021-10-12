@@ -13,7 +13,7 @@ public interface PlayerService {
     void savePlayer(Player player);
     Player getPlayer(UUID playerId);
 
-    public void sendIdToDealer(UUID playerId);
+ public void sendIdToDealer(UUID playerId);
     void cardDistribution(List<Player> players);
 
 

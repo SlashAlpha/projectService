@@ -57,9 +57,10 @@ export class PokerComponent implements OnInit {
   //
   // }
 
-  registerPlayer(player:Player):void{
-   this.apiService.registerPlayer(player).subscribe(res=>{
-
+  registerPlayer():void{
+   this.apiService.registerPlayer(this.Player).subscribe(res=>{
+      this.Player=res;
+      alert(res);
 
    },err => {
      alert("An error has occured registering the player");

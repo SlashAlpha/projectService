@@ -46,9 +46,10 @@ public class BootCards implements CommandLineRunner {
 
    //System.out.println(cardService.getOnePokerCard());
 
-//            Player player=new Player();
+
 //            ;
 //            UUID playId=playService.newPlay();
+//        Player player=new Player();
 //            playerService.newPlayer("Clement",38,5000);
 //
 //        playService.addPLayerToPlay(playId,  playerService.newPlayer("Pedro",32,6000).getId());

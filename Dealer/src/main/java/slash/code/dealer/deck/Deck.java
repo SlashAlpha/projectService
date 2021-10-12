@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -44,16 +45,16 @@ public class Deck extends BaseEntity {
                 ) {
                     if (values == 1) {
                         count += 1;
-                        Card ace = new Card(color, 10, baseCards.faceValue[4], "Ace", count);
+                        Card ace = new Card(UUID.randomUUID(),color, 10, baseCards.faceValue[4], "Ace", count);
                         this.cards.add(ace);
                     } else {
                         count += 1;
-                        Card card1 = new Card(color, values, baseCards.faceValue[0], baseCards.description[0], count);
+                        Card card1 = new Card(UUID.randomUUID(),color, values, baseCards.faceValue[0], baseCards.description[0], count);
                         this.cards.add(card1);
                     }                }
                 for (int i = 1; i < 4; i++) {
                     count += 1;
-                    Card faceCard = new Card(color, 10, baseCards.faceValue[i], baseCards.description[i], count);
+                    Card faceCard = new Card(UUID.randomUUID(),color, 10, baseCards.faceValue[i], baseCards.description[i], count);
                     this.cards.add(faceCard);
                 }
             }

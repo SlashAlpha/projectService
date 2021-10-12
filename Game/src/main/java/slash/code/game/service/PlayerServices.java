@@ -160,7 +160,7 @@ public class PlayerServices implements PlayerService {
     }
 
     @Override
-    public void sendIdToDealer(UUID playerId){
+   public void sendIdToDealer(UUID playerId){
         jmsTemplate.convertAndSend(JmsConfig.NEW_PLAYER,playerId.toString());
     }
 

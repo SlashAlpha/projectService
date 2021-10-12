@@ -36,7 +36,7 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
 
     this.apiService.newGame();
-   // this.apiService.getPlayers();
+    this.apiService.getPlayers();
 
   // this.setBlindToPlayer();
 

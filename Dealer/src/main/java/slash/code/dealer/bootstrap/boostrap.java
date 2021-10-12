@@ -9,14 +9,12 @@ public class boostrap implements CommandLineRunner {
 
 
     DealerRepository dealerRepository;
-    GameRepository gameRepository;
-    PlayerRepository playerRepository;
 
-    public boostrap( DealerRepository dealerRepository, GameRepository gameRepository, PlayerRepository playerRepository) {
+
+    public boostrap( DealerRepository dealerRepository) {
 
         this.dealerRepository = dealerRepository;
-        this.gameRepository = gameRepository;
-        this.playerRepository = playerRepository;
+
     }
 
     @Override

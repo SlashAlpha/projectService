@@ -40,16 +40,16 @@ public class DealerServices implements DealerService {
     }
 
     @JmsListener(destination = JmsConfig.NEW_PLAYER)
-    public UUID newPlayerListener(@Payload String message) {
+    public void newPlayerListener(@Payload String message) {
         if(playerCount<7) {
-            playersId.add(UUID.fromString(message));
+          this.playersId.add(UUID.fromString(message));
 
 //
-            playerCount += 1;
-//        System.out.println("new Player :" + message);
-            //  jmsTemplate.convertAndSend(JmsConfig.BLIND,5);
+            this.playerCount += 1;
+        System.out.println("new Player :" + message);
+
         }
-        return null;
+
     }
 
 
@@ -66,13 +66,17 @@ public class DealerServices implements DealerService {
 
 
     @JmsListener(destination = JmsConfig.POKER_GAME)
-    public String pokerGameListener(@Payload String gameId) {
+    public void pokerNewGameListener(@Payload String gameId) {
+        if(this.dealer==null){this.dealer=new Dealer();}
             this.deck=new Deck();
             this.deck.buildNewGameDeck();
+            this.dealer.setRiverW1(false);
+            dealer.setRiverW2(false);
+            dealer.setRiverW3(false);
+            dealerRepository.save(dealer);
+      //  jmsTemplate.convertAndSend(JmsConfig.BLIND,5);
 
 
-
-       return gameId;
 
  }
 
@@ -140,19 +144,21 @@ public class DealerServices implements DealerService {
         List<Card> cards= new ArrayList<>();
 
 
-            if(this.playersId.stream().anyMatch( player->player.equals(playerId)? playersId.remove(player):false) && playerServed<=playerCount){
+        for (UUID player:this.playersId
+             ) {if(player.equals(playerId)){
 
-                Card card=this.deck.getOneCardFromDeck();
-                cards.add(card);
-                card=this.deck.getOneCardFromDeck();
-                cards.add(card);
-                this.playerServed+=1;
-                return cards;
+            Card card=this.deck.getOneCardFromDeck();
+            cards.add(card);
+            card=this.deck.getOneCardFromDeck();
+            cards.add(card);
+            this.playerServed+=1;
+            this.playersId.remove(player);
+            return cards;}
 
 
-            }
 
-
+        }
+        System.out.println("player not found");
 return null;
 
         }

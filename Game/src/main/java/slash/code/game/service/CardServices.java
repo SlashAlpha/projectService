@@ -97,8 +97,9 @@ public class CardServices implements CardService{
         Card[] cards=restTemplate.getForObject(PLAYER_PATH+path,Card[].class);
         for (Card card:cards
              ) {
-            cardList.add(card);
-            cardRepository.save(card);
+            Card newCard=Card.builder().id(card.getId()).faceVal(card.getFaceVal()).number(card.getNumber()).description(card.getDescription()).color(card.getColor()).value(card.getValue()).build();
+
+            cardList.add(cardRepository.save(newCard));
         }
         return cardList;
     }

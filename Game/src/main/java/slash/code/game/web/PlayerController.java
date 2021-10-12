@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin("*")
-@RequestMapping("api/v1/poker/players")
+@RequestMapping("api/v1/players")
 @RestController
 public class PlayerController {
     PlayerService playerService;
@@ -32,7 +32,7 @@ public class PlayerController {
         this.playService = playService;
     }
 
-    @PostMapping("/newplayer{playId}")
+    @PostMapping("/newplayer/{playId}")
     public ResponseEntity<UUID> createPlayer(@PathVariable String playId, @RequestBody PlayerDTO playerDTO){
 
 
@@ -43,9 +43,6 @@ public class PlayerController {
         playService.addPLayerToPlay(UUID.fromString( playId),  playerService.newPlayer("Tabatha",34,8000).getId());
         playService.addPLayerToPlay(UUID.fromString( playId),  playerService.newPlayer("Manuel",37,5000).getId());
         playService.addPLayerToPlay(UUID.fromString( playId),  playerService.newPlayer("Samantha",31,4000).getId());
-
-
-
         if(!player.equals(null)){ System.out.println("player saved");
     return  new ResponseEntity<UUID>(player.getId(), HttpStatus.OK);}
 
@@ -53,8 +50,9 @@ public class PlayerController {
     else{return  null;}
     }
 
-    @GetMapping("/{playId}")
+    @GetMapping("/getplayers/{playId}")
         ResponseEntity<List<UUID>> getPlayers(@PathVariable String playId){
+        System.out.println("sending players...");
         List<UUID> playersId=new ArrayList<>();
         List<Player>players=playService.getPlayPlayers(UUID.fromString(playId));
 
@@ -62,16 +60,7 @@ public class PlayerController {
             playerService.sendIdToDealer(player.getId());
         playersId.add(player.getId());
         }
-
-
-
-
-
-
-
-
-
-        return new ResponseEntity<List<UUID>>(playersId,HttpStatus.OK);
+ return new ResponseEntity<List<UUID>>(playersId,HttpStatus.OK);
     }
     
     

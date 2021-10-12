@@ -11,15 +11,16 @@ import {waitForAsync} from "@angular/core/testing";
 })
 export class ApiService {
 
-  private BASE_URL="http://localhost:8081/api/v1/poker";
+  private BASE_URL="http://localhost:8081/api/v1";
   //launching game
-  private NEW_GAME=this.BASE_URL+"/newgame";
-  private NEW_PLAY=this.BASE_URL+"/newplay";
+  private NEW_GAME=this.BASE_URL+"/poker/newgame";
+  private NEW_PLAY=this.BASE_URL+"/poker/newplay";
 
   //players
-  private PLAYERS=this.BASE_URL+"/players";
-  private  NEW_PLAYER=this.PLAYERS+"/newplayer";
-  private BLINDS=this.PLAYERS+"/players/blinds";
+  private PLAYERS=this.BASE_URL+"/players/getplayers/";
+
+  private  NEW_PLAYER=this.BASE_URL+"/players/newplayer/";
+  private BLINDS=this.PLAYERS+"/player/blinds";
   private play:Play=new Play("");
   players:PlayerDTO[]=[];
   Player = {
@@ -57,7 +58,7 @@ export class ApiService {
     let url=this.NEW_GAME;
     this.http.get<string>(this.NEW_GAME+this.play.id).subscribe(res=>{
       this.game=res;
-      alert(this.game);
+
 
     },err => {
       alert("An error has occured");
@@ -65,12 +66,15 @@ export class ApiService {
   }
 
   registerPlayer(player:Player):Observable<any>{
+
    return  this.http.post(this.NEW_PLAYER+this.play.id,player)
+
 
   }
 
   getPlayers():void{
-    this.http.get<PlayerDTO[]>(this.PLAYERS+"/"+this.play.id).subscribe(res=>{
+    alert(this.PLAYERS)
+    this.http.get<PlayerDTO[]>(this.PLAYERS+this.play.id).subscribe(res=>{
         this.players=res;
 
 

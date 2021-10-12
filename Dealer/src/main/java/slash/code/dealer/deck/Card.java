@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +17,13 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
 
-public class Card extends BaseEntity {
+public class Card {
 
 
+
+    UUID id;
      String color;
      Integer value;
      Integer faceVal;
