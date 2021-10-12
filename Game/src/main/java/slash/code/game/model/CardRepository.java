@@ -6,4 +6,6 @@ import java.util.UUID;
 
 public interface CardRepository extends JpaRepository<Card, UUID> {
 
+    void deleteAllByValueGreaterThan(Integer value);
+
 }

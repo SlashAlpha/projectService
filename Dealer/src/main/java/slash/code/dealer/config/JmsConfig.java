@@ -11,6 +11,9 @@ public class JmsConfig {
 
     public static final String POKER_GAME = "poker";
     public static final String BLACKJACK_GAME = "black-jack";
+    public final static String NEW_PLAYER = "new-player";
+    public final static String BLIND = "blind";
+
 
     @Bean
     public MessageConverter messageConverter() {

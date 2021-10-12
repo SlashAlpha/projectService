@@ -16,28 +16,62 @@ public class DealerController {
     int count=0;
     List<UUID> players;
     Boolean firstWave=true;
+    
 
 DealerService dealerService;
 
     public DealerController(DealerService dealerService) {
         this.dealerService = dealerService;
     }
-    @GetMapping("pokerCard")
-    public ResponseEntity<Card> pokerCardToGame(){
-        if (dealerService.gameSet()==1){
-            return new ResponseEntity<Card>(dealerService.dealOne(), HttpStatus.OK);}
 
 
-        return new ResponseEntity<Card>(HttpStatus.CONFLICT);
+//    @GetMapping("pokerCard")
+//    public ResponseEntity<Card> pokerCardToGame(){
+//        if (dealerService.gameSet()==1){
+//            return new ResponseEntity<Card>(dealerService.dealOne(), HttpStatus.OK);}
+//
+//
+//        return new ResponseEntity<Card>(HttpStatus.CONFLICT);
+//
+//    }
+    @GetMapping("riverW1")
+    public ResponseEntity<List<Card>> riverCardsToGame(){
+       return new ResponseEntity<List<Card>>(dealerService.riverCards(),HttpStatus.OK);
+    }
+    @GetMapping("riverW2")
+    public ResponseEntity<Card> riverCardsToGame2() {
+        return new ResponseEntity<Card>(dealerService.riverWS(0),HttpStatus.OK);
 
     }
-    @GetMapping("blackJackCard")
-    public ResponseEntity<Card> blackJackCardToGame(@PathVariable UUID playerId,@PathVariable Integer numberOfPlayer,@PathVariable Integer attempt,@PathVariable Integer wave){
-        if (dealerService.gameSet()==2){
-            return new ResponseEntity<Card>(dealerService.dealOne(), HttpStatus.OK);
+    @GetMapping("riverW3")
+    public ResponseEntity<Card> riverCardsToGame3() {
+        return new ResponseEntity<Card>(dealerService.riverWS(1),HttpStatus.OK);
 
-        }
-        return new ResponseEntity<Card>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("player{playerId}")
+    public ResponseEntity<List<Card>> cardsToPlayer(@PathVariable String playerId){
+        List<Card>cards=dealerService.getPLayerCards(UUID.fromString(playerId));
+        if(cards!=null){
+        return new ResponseEntity<List<Card>>(cards,HttpStatus.OK); }
+        else { return new ResponseEntity<List<Card>>(HttpStatus.ALREADY_REPORTED);}
+    }
+
+
+//    @GetMapping("blackJackCard")
+//    public ResponseEntity<Card> blackJackCardToGame(@PathVariable UUID playerId,@PathVariable Integer numberOfPlayer,@PathVariable Integer attempt,@PathVariable Integer wave){
+//        if (dealerService.gameSet()==2){
+//            return null;
+//
+//        }
+//        return new ResponseEntity<Card>(HttpStatus.BAD_REQUEST);
+//    }
+
+    @GetMapping("blind")
+    public ResponseEntity<Integer> blinds(){
+        return new ResponseEntity<Integer>(5,HttpStatus.OK);
+
+
     }
 
 }

@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -20,20 +23,22 @@ import java.util.UUID;
 
         @Id
         UUID id;
-
+        Timestamp createdDate;
         String color;
         Integer value;
         Integer faceVal;
         String description;
+        Integer number;
 
 
 
 
-        public Card(String color, Integer value, Integer faceVal, String description) {
+        public Card(String color,Timestamp createdDate, Integer value, Integer faceVal, String description) {
             this.color = color;
             this.value = value;
             this.faceVal = faceVal;
             this.description = description;
+            this.createdDate=createdDate;
 
         }
 
@@ -47,7 +52,7 @@ import java.util.UUID;
         }
 
         public String stringify() {
-            String card = this.value + "/" + this.color + "/" + this.description + "/" + this.faceVal;
+            String card = this.value + "/" + this.color + "/" + this.description + "/" + this.faceVal+"/"+this.createdDate+"/"+this.id;
             return card;
         }
 
@@ -68,6 +73,7 @@ import java.util.UUID;
         public String getDescription() {
             return description;
         }
+
 
 
     }

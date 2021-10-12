@@ -13,9 +13,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="dealer" target="11" />
-      <module name="Game" target="11" />
-      <module name="gateway" target="11" />
+      <module name="dealer" target="15" />
+      <module name="Game" target="15" />
+      <module name="gateway" target="15" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

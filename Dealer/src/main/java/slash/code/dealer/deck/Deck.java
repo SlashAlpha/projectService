@@ -2,49 +2,72 @@ package slash.code.dealer.deck;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
-
-import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@Entity
-public class Deck {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    UUID id;
-    @OneToMany
-    @JoinTable(name = "deck_cards",joinColumns = {@JoinColumn(name = "deck_id")},
-            inverseJoinColumns = {@JoinColumn(name = "card_id")})
+public class Deck extends BaseEntity {
+
+
+
     private List<Card> cards;
     Integer count = 0;
     Integer turns = 0;
     Boolean blackJack=false;
     Boolean poker=false;
-    @OneToMany
-    @JoinTable(name = "used_deck_cards",joinColumns = {@JoinColumn(name = "deck_id")},
-            inverseJoinColumns = {@JoinColumn(name = "card_id")})
-    private List<Card> usedCard;
+
+
     StringBuffer sb = new StringBuffer();
     private Boolean verified;
 
     public Deck() {
         this.cards = new ArrayList<Card>();
-
-        usedCard = new ArrayList<>();
         this.verified=false;
+    }
 
 
+  public List<Card> buildNewGameDeck(){
+         this.cards = new ArrayList<>();
+        int count = 0;
+        if (this.cards.isEmpty()) {
+            count = 0;
+          CardData baseCards = new CardData();
+            for (String color : baseCards.color
+            ) {
+                for (Integer values : baseCards.value
+                ) {
+                    if (values == 1) {
+                        count += 1;
+                        Card ace = new Card(color, 10, baseCards.faceValue[4], "Ace", count);
+                        this.cards.add(ace);
+                    } else {
+                        count += 1;
+                        Card card1 = new Card(color, values, baseCards.faceValue[0], baseCards.description[0], count);
+                        this.cards.add(card1);
+                    }                }
+                for (int i = 1; i < 4; i++) {
+                    count += 1;
+                    Card faceCard = new Card(color, 10, baseCards.faceValue[i], baseCards.description[i], count);
+                    this.cards.add(faceCard);
+                }
+            }
+            if (count == 52) {
+                System.out.println("Deck is full and verified");
+            }
+        }
 
+
+        this.shuffleCard(1);
+        this.setPoker(true);
+        this.setVerified(true);
+
+        return this.cards;
     }
 
 
@@ -52,26 +75,20 @@ public class Deck {
 
     public void shuffleCard(int x) {
         for (int i = 0; i < x; i++) {
-            Collections.shuffle(cards);
+            Collections.shuffle(this.cards);
         }
 
     }
 
     public Card getOneCardFromDeck() {
         Card randomCard = this.cards.get(0);
-        usedCard.add(randomCard);
-        cards.remove(0);
+
+        this.cards.remove(0);
 
         return randomCard;
 
     }
-    public Boolean verifyCard(Card card){
-        Boolean verification= false;
-        for (Card card1:usedCard) {if(card1.id.equals(card.id)){verification=true;}
 
-        }
-        return verification;
-    }
 
 
     public List<Card> getCards() {
@@ -87,7 +104,7 @@ public class Deck {
     public String riverFill() {
         Card cardA = this.getCards().get(0);
         sb.append(cardA.value + "//" + cardA.color + "//" + cardA.description + "//" + cardA.faceVal + "//£//");
-        this.usedCard.add(cardA);
+
         this.cards.remove(cardA);
         return sb.toString();
     }
@@ -101,6 +118,8 @@ public class Deck {
         return "deck has " + this.count + " cards";
     }
 
+
+
     public Boolean getBlackJack() {
         return blackJack;
     }
@@ -111,5 +130,17 @@ public class Deck {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+
+
+    private class CardData {
+        final String[] color = {"Diamond", "Spade", "Heart", "Club"};
+        final Integer[] value = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        final Integer[] faceValue = {0, 1, 2, 3, 4};
+        final String[] description = {"", "Jack", "Queen", "King"};
+
+        public CardData() {
+        }
     }
 }

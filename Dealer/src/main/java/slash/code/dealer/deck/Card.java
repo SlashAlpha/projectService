@@ -5,37 +5,40 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@Entity
-public class Card {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    UUID id;
+
+public class Card extends BaseEntity {
+
 
      String color;
      Integer value;
      Integer faceVal;
      String description;
+     Integer number;
 
 
+    public Card() {
+    }
 
-
-    public Card(String color, Integer value, Integer faceVal, String description) {
+    public Card(String color, Integer value, Integer faceVal, String description,Integer number) {
         this.color = color;
         this.value = value;
         this.faceVal = faceVal;
         this.description = description;
+        this.number=number;
 
     }
+
 
     @Override
     public String toString() {

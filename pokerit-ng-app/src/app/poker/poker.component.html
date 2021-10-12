@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row">
+    <div class="offset-3"></div>
+    <div class="col-md-6">
+      <form name="form" #f="ngForm" (ngSubmit)="registerPlayer(Player)" novalidate class="feedback-form">
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name"> Name</label>
+          <input type="text"
+                 id="name"
+                 class="form-control"
+                 name="name"
+                 placeholder="Your name"
+                 [(ngModel)]="Player.name"
+
+
+                 required/>
+          <!-- input validation group -->
+          <div class="invalid-input">
+            <!-- individual validation errors -->
+            <div>Field is required</div>
+          </div>
+        </div>
+        <!-- Email -->
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number"
+                 id="age"
+                 class="form-control"
+                 name="age"
+                 placeholder="Your age"
+                 [(ngModel)]="Player.age"
+
+
+                 required email/>
+          <!-- input validation group -->
+          <div class="invalid-input">
+            <!-- individual validation errors -->
+            <div>Field is required</div>
+            <div>Field is not a valid number</div>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="bank">Bank</label>
+          <input type="number"
+                 id="bank"
+                 class="form-control"
+                 name="bank"
+                 placeholder="bank"
+                 [(ngModel)]="Player.bank"
+
+
+                 required/>
+          <!-- input validation group -->
+          <div>
+            <!-- individual validation errors -->
+            <div>Field is required</div>
+            <div>required</div>
+          </div>
+        </div>
+
+        <button  type="submit"  routerLink="/game" class="btn btn-info pull-right">
+          <i class="fa fa-envelope-o"></i>
+          <span> Send Feedback</span>
+        </button>
+      </form>
+    </div>
+    <div class="offset-3"></div>
+  </div>
+</div>
+
