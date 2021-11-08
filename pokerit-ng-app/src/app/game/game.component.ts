@@ -1,12 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {PlayerDTO} from "../model/playerDTO";
-
-import {PokerComponent} from "../poker/poker.component";
-import {Play} from "../model/play";
 import {ApiService} from "../shared/api.service";
-
-
 
 
 @Component({
@@ -38,7 +32,7 @@ export class GameComponent implements OnInit {
     this.apiService.newGame();
     this.apiService.getPlayers();
 
-  // this.setBlindToPlayer();
+    this.setBlindToPlayer();
 
   }
 

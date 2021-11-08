@@ -5,7 +5,10 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import slash.code.game.config.JmsConfig;
-import slash.code.game.model.*;
+import slash.code.game.model.Card;
+import slash.code.game.model.Game;
+import slash.code.game.model.GameRepository;
+import slash.code.game.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,21 +102,21 @@ public class GameServices implements GameService{
 
     @Override
     public List<Card> cardDispatch(UUID playerId) {
-        Player player=playerService.getPlayer(playerId);
-        List<Card> cards=cardService.playerCards(playerId);
+        Player player = playerService.getPlayer(playerId);
+        List<Card> cards = cardService.playerCards(playerId);
         player.setCards(cards);
         playerService.savePlayer(player);
         return cards;
     }
 
-    public void analysisPlayersCards(Player player){
-    List<Card> cards=new ArrayList<>();
-        cards.addAll(player.getCards());
-   List<Card>countedCard=  analysisService.countPair(cards);
-        if (countedCard.size()>0){
-            System.out.println(player.getName()+" has a pair of "+player.getOne().toString());
-        }
-
-    }
+//    public void analysisPlayersCards(Player player){
+//    List<Card> cards=new ArrayList<>();
+//        cards.addAll(player.getCards());
+//   List<Card>countedCard=  analysisService.countPair(cards);
+//        if (countedCard.size()>0){
+//            System.out.println(player.getName()+" has a pair of "+player.getOne().toString());
+//        }
+//
+//    }
 
 }

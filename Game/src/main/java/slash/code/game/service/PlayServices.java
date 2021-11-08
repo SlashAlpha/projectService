@@ -3,7 +3,6 @@ package slash.code.game.service;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import slash.code.game.config.JmsConfig;
 import slash.code.game.model.*;
 
@@ -101,8 +100,28 @@ public class PlayServices implements PlayService {
 
     @Override
     public List<Player> getPlayPlayers(UUID playId) {
-        Play play=playRepository.findById(playId).get();
+        Play play = playRepository.findById(playId).get();
         return play.getPlayers();
+    }
+
+    @Override
+    public Play save(Play play) {
+        return null;
+    }
+
+    @Override
+    public List<Play> findAll() {
+        return null;
+    }
+
+    @Override
+    public void deleteById(UUID uuid) {
+
+    }
+
+    @Override
+    public Play getOne(UUID uuid) {
+        return null;
     }
 }
 

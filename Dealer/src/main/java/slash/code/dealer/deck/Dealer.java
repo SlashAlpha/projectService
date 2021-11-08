@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
+
 @NoArgsConstructor
-public class Dealer extends BaseEntity {
+public class Dealer {
 
     boolean riverW1;
     boolean riverW2;

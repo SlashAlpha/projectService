@@ -3,7 +3,6 @@ package slash.code.game.web;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import slash.code.game.config.JmsConfig;
 import slash.code.game.model.Play;
 import slash.code.game.model.PlayRepository;
 import slash.code.game.model.Player;
@@ -52,15 +51,18 @@ public class PlayerController {
 
     @GetMapping("/getplayers/{playId}")
         ResponseEntity<List<UUID>> getPlayers(@PathVariable String playId){
-        System.out.println("sending players...");
-        List<UUID> playersId=new ArrayList<>();
-        List<Player>players=playService.getPlayPlayers(UUID.fromString(playId));
 
-        for (Player player:players){
+        List<PlayerDTO> frontPLayers = new ArrayList<PlayerDTO>();
+        System.out.println("sending players...");
+        List<UUID> playersId = new ArrayList<>();
+        List<Player> players = playService.getPlayPlayers(UUID.fromString(playId));
+
+        for (Player player : players) {
             playerService.sendIdToDealer(player.getId());
-        playersId.add(player.getId());
+            frontPLayers.add(mapper.convertToPlayerDTO(player));
+            playersId.add(player.getId());
         }
- return new ResponseEntity<List<UUID>>(playersId,HttpStatus.OK);
+        return new ResponseEntity<List<UUID>>(playersId, HttpStatus.OK);
     }
     
     
@@ -69,6 +71,7 @@ public class PlayerController {
     public void setBlinds(@PathVariable UUID playId){
        Play play= playService.getPLay(playId);
         playerService.setBlind(play.getPlayers(), playService.getBlind());
+        System.out.println("setting blinds");
 
     }
 

@@ -3,12 +3,10 @@ package slash.code.game.model;
 
 import lombok.*;
 
-
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,17 +32,15 @@ public class Player extends BaseEntity {
     boolean bb = false;
 
     @OneToMany
-    List<Card>cards;
+    List<Card> cards;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    Card one;
-    @OneToOne(cascade = CascadeType.ALL)
-    Card two;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    Card one;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    Card two;
 
     @ManyToOne
     Play plays;
-
-
 
 
     public Integer betting(Integer bet) {

@@ -34,27 +34,31 @@ DealerService dealerService;
 //        return new ResponseEntity<Card>(HttpStatus.CONFLICT);
 //
 //    }
-    @GetMapping("riverW1")
-    public ResponseEntity<List<Card>> riverCardsToGame(){
-       return new ResponseEntity<List<Card>>(dealerService.riverCards(),HttpStatus.OK);
-    }
+@GetMapping("riverW1")
+private ResponseEntity<List<Card>> riverCardsToGame() {
+    return new ResponseEntity<List<Card>>(dealerService.riverCards(), HttpStatus.OK);
+}
+
     @GetMapping("riverW2")
-    public ResponseEntity<Card> riverCardsToGame2() {
-        return new ResponseEntity<Card>(dealerService.riverWS(0),HttpStatus.OK);
+    private ResponseEntity<Card> riverCardsToGame2() {
+        return new ResponseEntity<Card>(dealerService.riverWS(0), HttpStatus.OK);
 
     }
+
     @GetMapping("riverW3")
-    public ResponseEntity<Card> riverCardsToGame3() {
-        return new ResponseEntity<Card>(dealerService.riverWS(1),HttpStatus.OK);
+    private ResponseEntity<Card> riverCardsToGame3() {
+        return new ResponseEntity<Card>(dealerService.riverWS(1), HttpStatus.OK);
 
     }
 
     @GetMapping("player{playerId}")
-    public ResponseEntity<List<Card>> cardsToPlayer(@PathVariable String playerId){
-        List<Card>cards=dealerService.getPLayerCards(UUID.fromString(playerId));
-        if(cards!=null){
-        return new ResponseEntity<List<Card>>(cards,HttpStatus.OK); }
-        else { return new ResponseEntity<List<Card>>(HttpStatus.ALREADY_REPORTED);}
+    private ResponseEntity<List<Card>> cardsToPlayer(@PathVariable String playerId) {
+        List<Card> cards = dealerService.getPLayerCards(UUID.fromString(playerId));
+        if (cards != null) {
+            return new ResponseEntity<List<Card>>(cards, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<Card>>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 

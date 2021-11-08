@@ -23,16 +23,18 @@ public class Mapper {
 
 
   public   CardDTO convertToCardDTO(Card card){
-        CardDTO cardDTO=CardDTO.builder()
-                .value(card.getValue())
-                .color(card.getColor())
-                .faceVal(card.getFaceVal())
-                .description(card.getDescription())
-                .number(card.getNumber())
-                .build();
-            return cardDTO;
-
-    }
+      if (card != null) {
+          CardDTO cardDTO = CardDTO.builder()
+                  .value(card.getValue())
+                  .color(card.getColor())
+                  .faceVal(card.getFaceVal())
+                  .description(card.getDescription())
+                  .number(card.getNumber())
+                  .build();
+          return cardDTO;
+      }
+      return null;
+  }
 
   public   PlayerDTO convertToPlayerDTO(Player player){
         PlayerDTO playerDTO=PlayerDTO.builder()
@@ -40,8 +42,7 @@ public class Mapper {
                 .age(player.getAge())
                 .bank(player.getBank())
                 .bet(player.getBet())
-                .cardDTO1(convertToCardDTO(player.getOne()))
-                .cardDTO2(convertToCardDTO(player.getTwo()))
+
                 .build();
     return playerDTO;
     }

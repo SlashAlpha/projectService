@@ -14,7 +14,7 @@ public interface PlayerService {
     Player getPlayer(UUID playerId);
 
  public void sendIdToDealer(UUID playerId);
-    void cardDistribution(List<Player> players);
+   // void cardDistribution(List<Player> players);
 
 
 }

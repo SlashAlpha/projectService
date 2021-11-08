@@ -7,16 +7,17 @@ import slash.code.game.model.Player;
 import java.util.List;
 import java.util.UUID;
 
-public interface PlayService {
+public interface PlayService extends ServiceBaseInterface<Play, UUID> {
 
-//temporary
+    //temporary
     void addPlayers(Play play);
+
     Player addPLayerToPlay(UUID playId, UUID PlayerId);
 
 
-     Game newGame(UUID play) throws InterruptedException;
+    Game newGame(UUID play) throws InterruptedException;
 
-     Game saveGame(Game game,Play play);
+    Game saveGame(Game game, Play play);
 
      Play getPLay(UUID playId);
 

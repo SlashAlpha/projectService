@@ -1,17 +1,13 @@
 package slash.code.game.service;
 
-import lombok.Builder;
-import org.springframework.stereotype.Service;
-import slash.code.game.config.JmsConfig;
-import slash.code.game.model.Card;
-import slash.code.game.model.CardList;
-import slash.code.game.model.CardRepository;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import slash.code.game.model.Card;
+import slash.code.game.model.CardRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,18 +38,11 @@ public class CardServices implements CardService{
         cardRepository.save(card);
     }
 
-    public Card getOnePokerCard(){
-
-        System.out.println("poker launched");
-
-        Card card=restTemplate.getForObject(CARD_PATH_V1,Card.class);
-
-        Card card1= Card.builder().id(card.getId()).createdDate(card.getCreatedDate()).color(card.getColor()).description(card.getDescription()).value(card.getValue()).build();
-
-        cardRepository.save(card);
-
+    public Card getOnePokerCard() {
+        Card card = restTemplate.getForObject(CARD_PATH_V1, Card.class);
+        Card card1 = Card.builder().id(card.getId()).createdDate(card.getCreatedDate()).color(card.getColor()).description(card.getDescription()).value(card.getValue()).build();
         System.out.println(card.stringify());
-        return card;
+        return cardRepository.save(card);
     }
 
     @Override

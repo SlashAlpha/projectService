@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Play} from "../model/play";
 import {PlayerDTO} from "../model/playerDTO";
 import {Player} from "../model/player";
-import {waitForAsync} from "@angular/core/testing";
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +18,9 @@ export class ApiService {
   //players
   private PLAYERS=this.BASE_URL+"/players/getplayers/";
 
-  private  NEW_PLAYER=this.BASE_URL+"/players/newplayer/";
-  private BLINDS=this.PLAYERS+"/player/blinds";
-  private play:Play=new Play("");
+  private NEW_PLAYER = this.BASE_URL + "/players/newplayer/";
+  private BLINDS = this.BASE_URL + "/players/blinds";
+  private play: Play = new Play("");
   players:PlayerDTO[]=[];
   Player = {
     id:'',
@@ -75,9 +74,8 @@ export class ApiService {
   getPlayers():void{
     alert(this.PLAYERS)
     this.http.get<PlayerDTO[]>(this.PLAYERS+this.play.id).subscribe(res=>{
-        this.players=res;
-
-
+      this.players = res;
+      alert(this.players)
       },err => {
         alert("Players List not acquired");}
 

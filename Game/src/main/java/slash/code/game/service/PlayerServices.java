@@ -1,15 +1,12 @@
 package slash.code.game.service;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import slash.code.game.config.JmsConfig;
 import slash.code.game.model.Player;
 import slash.code.game.model.PlayerRepository;
-
 
 import java.util.List;
 import java.util.UUID;
@@ -20,15 +17,15 @@ public class PlayerServices implements PlayerService {
     PlayerRepository playerRepository;
     RestTemplate restTemplate;
     JmsTemplate jmsTemplate;
-    Integer playerCount=0;
-    CardServices cardServices;
+    Integer playerCount = 0;
+    private CardService cardService;
 
 
-    public PlayerServices(PlayerRepository playerRepository, RestTemplateBuilder restTemplate, JmsTemplate jmsTemplate, CardServices cardServices) {
+    public PlayerServices(PlayerRepository playerRepository, RestTemplateBuilder restTemplate, JmsTemplate jmsTemplate, CardService cardService) {
         this.playerRepository = playerRepository;
         this.restTemplate = restTemplate.build();
         this.jmsTemplate = jmsTemplate;
-        this.cardServices = cardServices;
+        this.cardService = cardService;
     }
 
     @Override
@@ -78,7 +75,7 @@ public class PlayerServices implements PlayerService {
                     playerRepository.save(player1);
                     sb = true;
                 }
-                //si le joueur precdent est small blind, le suivant est big blind
+                //si le joueur precedent est small blind, le suivant est big blind
                 else if (player1.getNumber() == playerNumber) {
                     player1.setSb(false);
                     player1.setBb(true);
@@ -145,14 +142,14 @@ public class PlayerServices implements PlayerService {
     }
 
 
-    @Override
-    public void cardDistribution(List<Player>players) {
-        for (Player player:players){
-            player.setOne(cardServices.getOnePokerCard());
-            player.setTwo(cardServices.getOnePokerCard());
-            playerRepository.save(player);
-        }
-    }
+//    @Override
+//    public void cardDistribution(List<Player>players) {
+//        for (Player player:players){
+//            player.setOne(cardServices.getOnePokerCard());
+//            player.setTwo(cardServices.getOnePokerCard());
+//            playerRepository.save(player);
+//        }
+
 
     @Override
     public Player getPlayer(UUID playerId) {
@@ -160,8 +157,8 @@ public class PlayerServices implements PlayerService {
     }
 
     @Override
-   public void sendIdToDealer(UUID playerId){
-        jmsTemplate.convertAndSend(JmsConfig.NEW_PLAYER,playerId.toString());
+    public void sendIdToDealer(UUID playerId) {
+        jmsTemplate.convertAndSend(JmsConfig.NEW_PLAYER, playerId.toString());
     }
 
     @Override

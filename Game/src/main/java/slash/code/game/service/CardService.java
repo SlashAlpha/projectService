@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CardService {
-    Card getOnePokerCard();
+     Card getOnePokerCard();
+
     void saveCard(Card card);
     List<Card> firstWaveRiverCards();
     Card secondWaveRiverCards();
