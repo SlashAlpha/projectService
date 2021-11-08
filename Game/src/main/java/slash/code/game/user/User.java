@@ -19,7 +19,7 @@ public class User extends BaseEntity {
 
 
     @OneToMany
-    private List<Player> oneToMany;
+    private List<Player> UserPlayers;
 
 
 }
