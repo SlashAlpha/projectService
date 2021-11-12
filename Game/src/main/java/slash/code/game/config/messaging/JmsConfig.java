@@ -1,4 +1,4 @@
-package slash.code.game.config;
+package slash.code.game.config.messaging;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

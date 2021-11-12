@@ -3,7 +3,7 @@ package slash.code.game.service;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import slash.code.game.config.JmsConfig;
+import slash.code.game.config.messaging.JmsConfig;
 import slash.code.game.model.*;
 
 import java.util.ArrayList;

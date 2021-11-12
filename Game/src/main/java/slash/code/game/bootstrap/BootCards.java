@@ -2,14 +2,15 @@ package slash.code.game.bootstrap;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import slash.code.game.model.*;
-import slash.code.game.service.CardService;
-import slash.code.game.service.GameService;
-import slash.code.game.service.PlayerService;
-import slash.code.game.service.PlayService;
-
-import java.util.ArrayList;
-import java.util.UUID;
+import slash.code.game.model.CardRepository;
+import slash.code.game.model.GameRepository;
+import slash.code.game.model.PlayRepository;
+import slash.code.game.model.PlayerRepository;
+import slash.code.game.service.*;
+import slash.code.game.user.Role;
+import slash.code.game.user.RoleRepository;
+import slash.code.game.user.User;
+import slash.code.game.user.UserRepository;
 
 @Component
 public class BootCards implements CommandLineRunner {
@@ -21,8 +22,11 @@ public class BootCards implements CommandLineRunner {
     GameRepository gameRepository;
     CardRepository cardRepository;
     PlayerRepository playerRepository;
+    UserService userService;
+    UserRepository userRepository;
+    RoleRepository roleRepository;
 
-    public BootCards(CardService cardService, PlayerService playerService, GameService gameService, PlayService playService, PlayRepository playRepository, GameRepository gameRepository, CardRepository cardRepository, PlayerRepository playerRepository) {
+    public BootCards(CardService cardService, PlayerService playerService, GameService gameService, PlayService playService, PlayRepository playRepository, GameRepository gameRepository, CardRepository cardRepository, PlayerRepository playerRepository, UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
         this.cardService = cardService;
         this.playerService = playerService;
         this.gameService = gameService;
@@ -31,6 +35,9 @@ public class BootCards implements CommandLineRunner {
         this.gameRepository = gameRepository;
         this.cardRepository = cardRepository;
         this.playerRepository = playerRepository;
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -41,14 +48,31 @@ public class BootCards implements CommandLineRunner {
         gameRepository.deleteAll();
         playerRepository.deleteAll();
         cardRepository.deleteAll();
+        userRepository.deleteAll();
+        roleRepository.deleteAll();
 
 
-
-   //System.out.println(cardService.getOnePokerCard());
+        //System.out.println(cardService.getOnePokerCard());
 
 
 //            ;
-//            UUID playId=playService.newPlay();
+        //       UUID playId=playService.newPlay();
+        userService.saveRole(new Role("ROLE_USER"));
+        userService.saveRole(new Role("ROLE_ADMIN"));
+        userService.saveRole(new Role("ROLE_MANAGER"));
+        userService.saveRole(new Role("ROLE_SUPER_ADMIN"));
+
+        userService.saveUser(User.builder().email("johnbenett@gmail.com").firstName("John").lastName("Benett").password("1234").build());
+        userService.saveUser(User.builder().email("rebeccacrawford@gmail.com").firstName("Rebecca").lastName("Crawford").password("1234").build());
+        userService.saveUser(User.builder().email("maxwellLedoux@gmail.com").firstName("Maxwell").lastName("Ledoux").password("1234").build());
+        userService.saveUser(User.builder().email("LindaSue@gmail.com").firstName("Linda").lastName("Sue").password("1234").build());
+        userService.addRoleToUser("johnbenett@gmail.com", "ROLE_USER");
+        userService.addRoleToUser("rebeccacrawford@gmail.com", "ROLE_ADMIN");
+        userService.addRoleToUser("rebeccacrawford@gmail.com", "ROLE_MANAGER");
+
+        userService.addRoleToUser("maxwellLedoux@gmail.com", "ROLE_MANAGER");
+        userService.addRoleToUser("LindaSue@gmail.com", "ROLE_SUPER_ADMIN");
+
 //        Player player=new Player();
 //            playerService.newPlayer("Clement",38,5000);
 //

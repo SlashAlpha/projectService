@@ -79,7 +79,7 @@ public class PokerController {
     @GetMapping("/newplay")
     ResponseEntity<UUID> newPlay(){
         Play play = new Play(new ArrayList<Game>(), new ArrayList<Player>(),0);
-        return new ResponseEntity<UUID>(playService.savePlay(play).getId(), HttpStatus.OK);
+        return new ResponseEntity<UUID>(playService.newPlay(), HttpStatus.OK);
         }
 
     @GetMapping("/newgame{playId}")

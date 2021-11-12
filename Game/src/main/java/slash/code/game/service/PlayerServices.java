@@ -4,7 +4,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import slash.code.game.config.JmsConfig;
+import slash.code.game.config.messaging.JmsConfig;
 import slash.code.game.model.Player;
 import slash.code.game.model.PlayerRepository;
 

@@ -34,19 +34,20 @@ public class PlayerController {
     @PostMapping("/newplayer/{playId}")
     public ResponseEntity<UUID> createPlayer(@PathVariable String playId, @RequestBody PlayerDTO playerDTO){
 
+        UUID play = UUID.fromString(playId);
+        Player player = mapper.convertNewPlayerDTOToPlayer(playerDTO);
+        playService.addPLayerToPlay(play, player.getId());
 
-        Player player=mapper.convertNewPlayerDTOToPlayer(playerDTO);
-        playService.addPLayerToPlay(UUID.fromString(playId),player.getId());
-
-        playService.addPLayerToPlay(UUID.fromString( playId),  playerService.newPlayer("Pedro",32,6000).getId());
-        playService.addPLayerToPlay(UUID.fromString( playId),  playerService.newPlayer("Tabatha",34,8000).getId());
-        playService.addPLayerToPlay(UUID.fromString( playId),  playerService.newPlayer("Manuel",37,5000).getId());
-        playService.addPLayerToPlay(UUID.fromString( playId),  playerService.newPlayer("Samantha",31,4000).getId());
-        if(!player.equals(null)){ System.out.println("player saved");
-    return  new ResponseEntity<UUID>(player.getId(), HttpStatus.OK);}
-
-
-    else{return  null;}
+        playService.addPLayerToPlay(play, playerService.newPlayer("Pedro", 32, 6000).getId());
+        playService.addPLayerToPlay(play, playerService.newPlayer("Tabatha", 34, 8000).getId());
+        playService.addPLayerToPlay(play, playerService.newPlayer("Manuel", 37, 5000).getId());
+        playService.addPLayerToPlay(play, playerService.newPlayer("Samantha", 31, 4000).getId());
+        if (!player.equals(null)) {
+            System.out.println("player: " + player.toString() + " saved");
+            return new ResponseEntity<UUID>(player.getId(), HttpStatus.OK);
+        } else {
+            return null;
+        }
     }
 
     @GetMapping("/getplayers/{playId}")
