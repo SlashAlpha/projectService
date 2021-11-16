@@ -34,11 +34,11 @@ public class UserServices implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
-        if (user.equals(null)) {
+        if (user == null) {
             log.error("user not found");
             throw new UsernameNotFoundException("user not found");
         } else {
-            log.info("user found : {}", user.getFirstName() + " " + user.getLastName());
+            log.info("user found : {}", user.getEmail() + " " + user.getPassword());
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
@@ -49,7 +49,7 @@ public class UserServices implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
-        log.info("saving user : {} to the database", user.getLastName());
+        log.info("saving user : {} to the database", user.getEmail() + " " + user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

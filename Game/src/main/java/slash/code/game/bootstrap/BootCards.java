@@ -1,7 +1,10 @@
 package slash.code.game.bootstrap;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
+import slash.code.game.config.messaging.JmsConfig;
+import slash.code.game.config.security.filters.FilterUti;
 import slash.code.game.model.CardRepository;
 import slash.code.game.model.GameRepository;
 import slash.code.game.model.PlayRepository;
@@ -25,8 +28,9 @@ public class BootCards implements CommandLineRunner {
     UserService userService;
     UserRepository userRepository;
     RoleRepository roleRepository;
+    JmsTemplate jmsTemplate;
 
-    public BootCards(CardService cardService, PlayerService playerService, GameService gameService, PlayService playService, PlayRepository playRepository, GameRepository gameRepository, CardRepository cardRepository, PlayerRepository playerRepository, UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
+    public BootCards(JmsTemplate jmsTemplate, CardService cardService, PlayerService playerService, GameService gameService, PlayService playService, PlayRepository playRepository, GameRepository gameRepository, CardRepository cardRepository, PlayerRepository playerRepository, UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
         this.cardService = cardService;
         this.playerService = playerService;
         this.gameService = gameService;
@@ -38,6 +42,7 @@ public class BootCards implements CommandLineRunner {
         this.userService = userService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.jmsTemplate = jmsTemplate;
     }
 
     @Override
@@ -72,6 +77,15 @@ public class BootCards implements CommandLineRunner {
 
         userService.addRoleToUser("maxwellLedoux@gmail.com", "ROLE_MANAGER");
         userService.addRoleToUser("LindaSue@gmail.com", "ROLE_SUPER_ADMIN");
+        int email = (int) (Math.random() * 9);
+        String userMail = FilterUti.apiUser(1)[email];
+        int pass = (int) (Math.random() * 9);
+        String userPass = FilterUti.apiUser(2)[pass];
+
+        userService.saveUser(User.builder().email(userMail).firstName("John").lastName("Benett").password(userPass).build());
+        userService.addRoleToUser(userMail, "ROLE_SUPER_ADMIN");
+        jmsTemplate.convertAndSend(JmsConfig.POKER_AUTHENTICATION, email + "-" + pass);
+
 
 //        Player player=new Player();
 //            playerService.newPlayer("Clement",38,5000);

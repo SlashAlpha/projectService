@@ -1,4 +1,4 @@
-package slash.code.game.config.security;
+package slash.code.dealer.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import slash.code.game.config.security.filters.CustomAuthenticationFilter;
-import slash.code.game.config.security.filters.CustomAuthorizationFilter;
+import slash.code.dealer.config.security.filter.CustomAuthenticationFilter;
+import slash.code.dealer.config.security.filter.CustomAuthorizationFilter;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -24,7 +24,9 @@ import static org.springframework.http.HttpMethod.POST;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+
     private final BCryptPasswordEncoder passwordEncoder;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -33,49 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**", "/api/v1/auth/refreshtoken/**").permitAll();
-        http.authorizeRequests().antMatchers(POST, "/api/v1/auth/newuser").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/api/v1/auth/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(GET, "/api/v1/auth/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(POST, "/api/v1/auth/newuser").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-
-//        http
-//                .authorizeRequests(authorize -> {
-//                    authorize
-//                            .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
-//                            .antMatchers("/api/v1/poker/newplay").permitAll()
-//                            .antMatchers(HttpMethod.GET, "/api/v1/poker/**").permitAll()
-//                            .antMatchers("/api/v1/**").permitAll()
-//                            .mvcMatchers(HttpMethod.POST,"/api/v1/**").permitAll()
-//                            .mvcMatchers(HttpMethod.GET,"/api/v1/**").permitAll();
-//
-//
-//                } )
-//                .authorizeRequests()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().and()
-//                .httpBasic();}
-
-
-    //    @Override
-//    @Bean
-//    protected UserDetailsService userDetailsService() {
-//        UserDetails admin= User.withDefaultPasswordEncoder()
-//                .username("slash")
-//                .password("slash")
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user= User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("user")
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(admin,user);
-//    }
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -85,12 +51,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("slash").password("{noop}slash").roles("ADMIN")
-//                .and()
-//                .withUser("user").password("{noop}user").roles("USER");
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 
 
     }
+
+
 }
+
+

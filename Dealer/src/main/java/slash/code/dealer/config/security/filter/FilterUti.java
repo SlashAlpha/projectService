@@ -1,4 +1,4 @@
-package slash.code.game.config.security.filters;
+package slash.code.dealer.config.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import slash.code.game.user.Role;
+import slash.code.dealer.security.Role;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,6 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @UtilityClass
 public class FilterUti {
 
+    public static String pokerToken;
 
     public String tokenUtiJWT(String userEmail, Collection<GrantedAuthority> userRole, Collection<Role> roles, Integer tokenAvailability) {
 
@@ -93,4 +94,5 @@ public class FilterUti {
         }
         return null;
     }
+
 }

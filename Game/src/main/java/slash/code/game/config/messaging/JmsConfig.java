@@ -13,6 +13,8 @@ public class JmsConfig {
     public static final String BLACKJACK_GAME = "black-jack";
     public final static String NEW_PLAYER = "new-player";
     public final static String BLIND = "blind";
+    public final static String POKER_AUTHENTICATION = "poker-authentication";
+    public final static String DEALER_AUTHENTICATION = "dealer-authentication";
 
 
     @Bean
