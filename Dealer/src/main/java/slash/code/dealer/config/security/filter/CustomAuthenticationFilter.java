@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import slash.code.dealer.config.security.SecurityUti;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -35,9 +36,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
-        String accessToken = FilterUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 10 * 60 * 1000);
-        String refreshToken = FilterUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 60 * 60 * 1000);
-        new ObjectMapper().writeValue(response.getOutputStream(), FilterUti.responseToken(response, accessToken, refreshToken));
+        String accessToken = SecurityUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 10 * 60 * 1000);
+        String refreshToken = SecurityUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 60 * 60 * 1000);
+        new ObjectMapper().writeValue(response.getOutputStream(), SecurityUti.responseToken(response, accessToken, refreshToken));
 
     }
 }

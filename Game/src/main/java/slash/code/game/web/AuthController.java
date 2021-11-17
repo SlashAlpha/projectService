@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import slash.code.game.config.security.filters.FilterUti;
+import slash.code.game.config.security.SecurityUti;
 import slash.code.game.service.UserService;
 import slash.code.game.user.Role;
 import slash.code.game.user.User;
@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -60,14 +62,17 @@ public class AuthController {
 
     @GetMapping("/refreshtoken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer userTime = 60 * 60 * 1000;
+        Integer adminTime = 24 * 60 * 60 * 1000;
+        List<String> emails = Arrays.stream(SecurityUti.apiUser(1)).collect(Collectors.toList());
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 //    String refreshToken = authorizationHeader.substring("Bearer ".length());
                 //        DecodedJWT decodedJWT = FilterUti.decodeJwt(authorizationHeader);
 //                String email = decodedJWT.getSubject();
-                User user = userService.getUser(FilterUti.decodeJwt(authorizationHeader).getSubject());
-                String accessToken = FilterUti.tokenUtiJWT(user.getEmail(), null, user.getRoles(), 60 * 60 * 1000);
+                User user = userService.getUser(SecurityUti.decodeJwt(authorizationHeader).getSubject());
+                String accessToken = SecurityUti.tokenUtiJWT(user.getEmail(), null, user.getRoles(), emails.contains(user.getEmail()) ? adminTime : userTime);
 //                        JWT.create()
 //                        .withSubject(user.getEmail())
 //                        .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
@@ -78,7 +83,7 @@ public class AuthController {
 //                tokens.put("access token", accessToken);
 //                tokens.put("refresh token", authorizationHeader.substring("Bearer ".length()));
 //                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), FilterUti.responseToken(response, accessToken, authorizationHeader.substring("Bearer ".length())));
+                new ObjectMapper().writeValue(response.getOutputStream(), SecurityUti.responseToken(response, accessToken, authorizationHeader.substring("Bearer ".length())));
             } catch (Exception e) {
 //                log.error("error logging in : {}", e.getMessage());
 //                response.setHeader("error", e.getMessage());
@@ -86,7 +91,7 @@ public class AuthController {
 //                Map<String, String> error = new HashMap<>();
 //                error.put("error message", e.getMessage());
 //                response.setContentType(APPLICATION_JSON_VALUE);
-                FilterUti.except(e, response);
+                SecurityUti.except(e, response);
 //                new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         } else {

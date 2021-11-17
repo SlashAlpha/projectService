@@ -1,4 +1,4 @@
-package slash.code.game.config.security.filters;
+package slash.code.game.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -24,12 +24,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @UtilityClass
-public class FilterUti {
+public class SecurityUti {
 
+    private static final String SALT_POKER = "SLASH-POKER-GLOVE-BOX";
 
     public String tokenUtiJWT(String userEmail, Collection<GrantedAuthority> userRole, Collection<Role> roles, Integer tokenAvailability) {
 
-        Algorithm algorithm = Algorithm.HMAC256("slash".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(SALT_POKER.getBytes());
         String token = JWT.create()
                 .withSubject(userEmail)
                 .withExpiresAt(new Date(System.currentTimeMillis() + tokenAvailability))
@@ -68,7 +69,7 @@ public class FilterUti {
 
     public DecodedJWT decodeJwt(String authorizationHeader) {
         String token = authorizationHeader.substring("Bearer ".length());
-        Algorithm algorithm = Algorithm.HMAC256("slash".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(SALT_POKER.getBytes());
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
         return decodedJWT;

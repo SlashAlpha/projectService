@@ -3,6 +3,7 @@ package slash.code.game.config.security.filters;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
+import slash.code.game.config.security.SecurityUti;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,7 +38,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 //                    UsernamePasswordAuthenticationToken authenticationToken =
 //                            new UsernamePasswordAuthenticationToken(email, null, authorities);
 //                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    FilterUti.authorizationUtiJWT(authorizationHeader);
+                    SecurityUti.authorizationUtiJWT(authorizationHeader);
                     filterChain.doFilter(request, response);
 
                 } catch (Exception e) {
@@ -50,7 +51,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
 
 //                    new ObjectMapper().writeValue(response.getOutputStream(), error);
-                    FilterUti.except(e, response);
+                    SecurityUti.except(e, response);
                 }
 
 

@@ -4,7 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import slash.code.game.config.messaging.JmsConfig;
-import slash.code.game.config.security.filters.FilterUti;
+import slash.code.game.config.security.SecurityUti;
 import slash.code.game.model.CardRepository;
 import slash.code.game.model.GameRepository;
 import slash.code.game.model.PlayRepository;
@@ -78,9 +78,9 @@ public class BootCards implements CommandLineRunner {
         userService.addRoleToUser("maxwellLedoux@gmail.com", "ROLE_MANAGER");
         userService.addRoleToUser("LindaSue@gmail.com", "ROLE_SUPER_ADMIN");
         int email = (int) (Math.random() * 9);
-        String userMail = FilterUti.apiUser(1)[email];
+        String userMail = SecurityUti.apiUser(1)[email];
         int pass = (int) (Math.random() * 9);
-        String userPass = FilterUti.apiUser(2)[pass];
+        String userPass = SecurityUti.apiUser(2)[pass];
 
         userService.saveUser(User.builder().email(userMail).firstName("John").lastName("Benett").password(userPass).build());
         userService.addRoleToUser(userMail, "ROLE_SUPER_ADMIN");

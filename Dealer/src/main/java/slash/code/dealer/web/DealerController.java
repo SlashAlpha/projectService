@@ -52,7 +52,7 @@ private ResponseEntity<List<Card>> riverCardsToGame() {
     }
 
     @GetMapping("player{playerId}")
-    private ResponseEntity<List<Card>> cardsToPlayer(@PathVariable String playerId) {
+    private ResponseEntity<List<Card>> cardsToPlayer(String version, @PathVariable String playerId) {
         List<Card> cards = dealerService.getPLayerCards(UUID.fromString(playerId));
         if (cards != null) {
             return new ResponseEntity<List<Card>>(cards, HttpStatus.OK);

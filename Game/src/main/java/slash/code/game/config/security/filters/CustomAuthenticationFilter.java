@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import slash.code.game.config.security.SecurityUti;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -38,14 +39,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         User user = (User) authResult.getPrincipal();
 
         // Algorithm algorithm = Algorithm.HMAC256("slash".getBytes());
-        String accessToken = FilterUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 10 * 60 * 1000);
+        String accessToken = SecurityUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 10 * 60 * 1000);
 //                JWT.create()
 //                .withSubject(user.getUsername())
 //                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
 //                .withIssuer("Slash")
 //                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 //                .sign(algorithm);
-        String refreshToken = FilterUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 60 * 60 * 1000);
+        String refreshToken = SecurityUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 60 * 60 * 1000);
 
 //                JWT.create()
 //                .withSubject(user.getUsername())
@@ -60,7 +61,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //        tokens.put("access token", accessToken);
 //        tokens.put("refresh token", refreshToken);
 //        response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), FilterUti.responseToken(response, accessToken, refreshToken));
+        new ObjectMapper().writeValue(response.getOutputStream(), SecurityUti.responseToken(response, accessToken, refreshToken));
 
 
     }

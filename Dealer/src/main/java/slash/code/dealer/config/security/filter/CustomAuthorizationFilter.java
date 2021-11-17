@@ -1,6 +1,7 @@
 package slash.code.dealer.config.security.filter;
 
 import org.springframework.web.filter.OncePerRequestFilter;
+import slash.code.dealer.config.security.SecurityUti;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,10 +21,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    FilterUti.authorizationUtiJWT(authorizationHeader);
+                    SecurityUti.authorizationUtiJWT(authorizationHeader);
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
-                    FilterUti.except(e, response);
+                    SecurityUti.except(e, response);
                 }
             } else {
                 filterChain.doFilter(request, response);

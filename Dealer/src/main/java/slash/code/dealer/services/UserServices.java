@@ -1,6 +1,9 @@
 package slash.code.dealer.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -17,13 +20,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import slash.code.dealer.config.JmsConfig;
-import slash.code.dealer.config.security.filter.FilterUti;
+import slash.code.dealer.config.security.SecurityUti;
 import slash.code.dealer.security.Role;
+import slash.code.dealer.security.TokenDto;
 import slash.code.dealer.security.User;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+
 
 @Slf4j
 @Transactional
@@ -46,8 +51,12 @@ public class UserServices implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUserDealer() {
-        return this.userDealer;
+    public User getUserDealer(String email) {
+        if (!email.equals(null) && email.equals(userDealer.getEmail())) {
+            return this.userDealer;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -60,9 +69,8 @@ public class UserServices implements UserService, UserDetailsService {
     public void securedPokerApi(@Payload String code) {
         int username = Integer.parseInt(code.substring(0, 1));
         int password = Integer.parseInt(code.substring(2));
-        String email = FilterUti.apiUser(1)[username];
-        String passW = FilterUti.apiUser(2)[password];
-
+        String email = SecurityUti.apiUser(1)[username];
+        String passW = SecurityUti.apiUser(2)[password];
         Role adminApi = new Role("ROLE_ADMIN");
         userPoker.getRoles().add(adminApi);
         userPoker = new User(email, passW, userPoker.getRoles());
@@ -72,22 +80,30 @@ public class UserServices implements UserService, UserDetailsService {
         userSecurity.add("email", email);
         userSecurity.add("password", passW);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(userSecurity, headers);
-
-        System.out.println(request);
         System.out.println(email + " " + passW);
-        ResponseEntity tokenDto = restTemplate.exchange(LOGIN_PATH, HttpMethod.POST, request, String.class);
-
-        FilterUti.pokerToken = tokenDto.getBody().toString();
-        System.out.println(tokenDto.getBody().toString());
-        userDealer = new User();
+        ResponseEntity response = restTemplate.exchange(LOGIN_PATH, HttpMethod.POST, request, String.class);
+        String accessToken = response.getBody().toString();
+        Gson gson = new Gson();
+        JsonObject jsonObject = new JsonParser().parse(accessToken).getAsJsonObject();
+        TokenDto tokens = new TokenDto(jsonObject.get("access token").toString().replaceAll("^\"+|\"+$", ""), jsonObject.get("refresh token").toString());
+        System.out.println(tokens);
+        SecurityUti.pokerToken = tokens.getAccessToken();
+        System.out.println("ac token" + tokens.getAccessToken());
         int userMail = (int) (Math.random() * 9);
+        while (userMail == username) {
+            userMail = (int) (Math.random() * 9);
+        }
         int userPass = (int) (Math.random() * 9);
-        email = FilterUti.apiUser(1)[userMail];
-        passW = FilterUti.apiUser(2)[userPass];
+        email = SecurityUti.apiUser(1)[userMail];
+        passW = SecurityUti.apiUser(2)[userPass];
         System.out.println("new user=  email : " + email + " pass : " + passW);
         userDealer = new User(email, passwordEncoder.encode(passW), userPoker.getRoles());
         jmsTemplate.convertAndSend(JmsConfig.DEALER_AUTHENTICATION, userMail + "-" + userPass);
-
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", "Bearer " + tokens.getAccessToken());
+        HttpEntity entity = new HttpEntity(httpHeaders);
+        ResponseEntity<String> refreshToken = restTemplate.exchange("http://localhost:8081/api/v1/auth/refreshtoken", HttpMethod.GET, entity, String.class);
+        System.out.println("new Refresh token " + refreshToken.getBody());
     }
 
     @Override

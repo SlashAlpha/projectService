@@ -11,7 +11,7 @@ public interface UserService {
 
     void securedPokerApi(String code);
 
-    User getUserDealer();
+    User getUserDealer(String email);
 
     User getUserPoker();
 }
