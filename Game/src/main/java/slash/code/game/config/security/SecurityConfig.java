@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import slash.code.game.config.security.filters.CustomAuthenticationFilter;
 import slash.code.game.config.security.filters.CustomAuthorizationFilter;
 
@@ -28,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
@@ -39,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
 
 
 //        http
@@ -93,4 +96,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
+
+
 }

@@ -7,11 +7,14 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import slash.code.dealer.security.Role;
+import slash.code.dealer.security.TokenDto;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -78,8 +81,8 @@ public class SecurityUti {
 
     public Map<String, String> responseToken(HttpServletResponse response, String accessToken, String refreshToken) {
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access token", accessToken);
-        tokens.put("refresh token", refreshToken);
+        tokens.put("accessToken", accessToken);
+        tokens.put("refreshToken", refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
         return tokens;
     }
@@ -94,6 +97,13 @@ public class SecurityUti {
             return password;
         }
         return null;
+    }
+
+    public HttpEntity restEntityTokenedHeaders(TokenDto tokens) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", "Bearer " + tokens.getAccessToken());
+        HttpEntity entity = new HttpEntity(httpHeaders);
+        return entity;
     }
 
 }

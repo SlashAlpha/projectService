@@ -33,7 +33,7 @@ public class AuthController {
 
     @GetMapping("/refreshtoken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Integer userTime = 60 * 60 * 1000;
+
         Integer adminTime = 24 * 60 * 60 * 1000;
         List<String> emails = Arrays.stream(SecurityUti.apiUser(1)).collect(Collectors.toList());
 

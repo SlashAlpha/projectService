@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
+
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -27,6 +29,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String email = request.getParameter("email");
+        request.getHeader(ACCESS_CONTROL_ALLOW_ORIGIN);
+        response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         String password = request.getParameter("password");
         log.info("username : " + email + " password : {}", password);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(email, password);
@@ -37,7 +41,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
-
+        request.getHeader(ACCESS_CONTROL_ALLOW_ORIGIN);
+        response.setHeader(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         // Algorithm algorithm = Algorithm.HMAC256("slash".getBytes());
         String accessToken = SecurityUti.tokenUtiJWT(user.getUsername(), user.getAuthorities(), null, 10 * 60 * 1000);
 //                JWT.create()

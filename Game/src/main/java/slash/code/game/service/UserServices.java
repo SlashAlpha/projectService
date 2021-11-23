@@ -36,6 +36,7 @@ public class UserServices implements UserService, UserDetailsService {
     public final static String LOGIN_PATH = "http://localhost:8080/api/login";
     private RestTemplate restTemplate;
 
+
     public UserServices(RestTemplateBuilder restTemplate, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -114,12 +115,9 @@ public class UserServices implements UserService, UserDetailsService {
         String accessToken = tokenDto.getBody().toString();
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonParser().parse(accessToken).getAsJsonObject();
-        TokenDto tokens = new TokenDto(jsonObject.get("access token").toString().replaceAll("^\"+|\"+$", ""), jsonObject.get("refresh token").toString());
-        System.out.println(tokens);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization", "Bearer " + tokens.getAccessToken());
-        HttpEntity entity = new HttpEntity(httpHeaders);
-        ResponseEntity<String> refreshToken = restTemplate.exchange("http://localhost:8080/api/v1/auth/refreshtoken", HttpMethod.GET, entity, String.class);
+        TokenDto tokens = new TokenDto(jsonObject.get("accessToken").toString().replaceAll("^\"+|\"+$", ""), jsonObject.get("refreshToken").toString());
+        SecurityUti.setTokenDto(tokens);
+        ResponseEntity<String> refreshToken = restTemplate.exchange("http://localhost:8080/api/v1/auth/refreshtoken", HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(tokens), String.class);
         System.out.println("new Refresh token " + refreshToken.getBody());
 
 

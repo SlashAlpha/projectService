@@ -19,6 +19,9 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/blackjack">BlackJack</a>
       </li>
+      <li *ngIf="!router.url.includes('login')" class="nav-item">
+        <a class="nav-link" id="login" routerLink="/login">Login/Signup</a>
+      </li>
     </ul>
   </div>
 </nav>

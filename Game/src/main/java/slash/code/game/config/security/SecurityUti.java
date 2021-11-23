@@ -7,11 +7,14 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import slash.code.game.user.Role;
+import slash.code.game.user.TokenDto;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,6 +30,16 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class SecurityUti {
 
     private static final String SALT_POKER = "SLASH-POKER-GLOVE-BOX";
+
+    TokenDto tokenDto = new TokenDto();
+
+    public static TokenDto getTokenDto() {
+        return tokenDto;
+    }
+
+    public static void setTokenDto(TokenDto tokenDto) {
+        SecurityUti.tokenDto = tokenDto;
+    }
 
     public String tokenUtiJWT(String userEmail, Collection<GrantedAuthority> userRole, Collection<Role> roles, Integer tokenAvailability) {
 
@@ -67,6 +80,7 @@ public class SecurityUti {
 
     }
 
+
     public DecodedJWT decodeJwt(String authorizationHeader) {
         String token = authorizationHeader.substring("Bearer ".length());
         Algorithm algorithm = Algorithm.HMAC256(SALT_POKER.getBytes());
@@ -77,8 +91,8 @@ public class SecurityUti {
 
     public Map<String, String> responseToken(HttpServletResponse response, String accessToken, String refreshToken) {
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access token", accessToken);
-        tokens.put("refresh token", refreshToken);
+        tokens.put("accessToken", accessToken);
+        tokens.put("refreshToken", refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
         return tokens;
     }
@@ -93,5 +107,13 @@ public class SecurityUti {
             return password;
         }
         return null;
+    }
+
+
+    public HttpEntity restEntityTokenedHeaders(TokenDto tokens) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", "Bearer " + tokens.getAccessToken());
+        HttpEntity entity = new HttpEntity(httpHeaders);
+        return entity;
     }
 }

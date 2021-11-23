@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Slf4j
@@ -22,6 +23,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
+            request.getHeader(ACCESS_CONTROL_ALLOW_ORIGIN);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
 //                    String token = authorizationHeader.substring("Bearer ".length());

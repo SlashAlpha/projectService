@@ -1,10 +1,12 @@
 package slash.code.game.service;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import slash.code.game.config.messaging.JmsConfig;
+import slash.code.game.config.security.SecurityUti;
 import slash.code.game.model.Card;
 import slash.code.game.model.Game;
 import slash.code.game.model.GameRepository;
@@ -55,13 +57,15 @@ public class GameServices implements GameService{
     @Override
     public Game blindToPlayers(Game game, List<Player>players) {
 
-        Integer blind=restTemplate.getForObject(BLIND_PATH,Integer.class);
-            playerService.setBlind(players, blind);
-            game.setBetsBank(blind+(blind*2));
+        Integer blind = restTemplate.exchange(BLIND_PATH, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenDto()), Integer.class).getBody();
+
+        restTemplate.getForObject(BLIND_PATH, Integer.class);
+        playerService.setBlind(players, blind);
+        game.setBetsBank(blind + (blind * 2));
 
 
-           // playerService.cardDistribution(players);
-            return game;
+        // playerService.cardDistribution(players);
+        return game;
     }
 
     @Override

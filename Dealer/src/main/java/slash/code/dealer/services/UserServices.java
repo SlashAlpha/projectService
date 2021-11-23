@@ -85,7 +85,7 @@ public class UserServices implements UserService, UserDetailsService {
         String accessToken = response.getBody().toString();
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonParser().parse(accessToken).getAsJsonObject();
-        TokenDto tokens = new TokenDto(jsonObject.get("access token").toString().replaceAll("^\"+|\"+$", ""), jsonObject.get("refresh token").toString());
+        TokenDto tokens = new TokenDto(jsonObject.get("accessToken").toString().replaceAll("^\"+|\"+$", ""), jsonObject.get("refreshToken").toString());
         System.out.println(tokens);
         SecurityUti.pokerToken = tokens.getAccessToken();
         System.out.println("ac token" + tokens.getAccessToken());

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Slf4j
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

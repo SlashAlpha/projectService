@@ -78,9 +78,13 @@ public class PokerController {
     }
     @GetMapping("/newplay")
     ResponseEntity<UUID> newPlay(){
-        Play play = new Play(new ArrayList<Game>(), new ArrayList<Player>(),0);
-        return new ResponseEntity<UUID>(playService.newPlay(), HttpStatus.OK);
-        }
+
+
+        Play play = new Play(new ArrayList<Game>(), new ArrayList<Player>(), 0);
+        // return new ResponseEntity<UUID>(playService.newPlay(), HttpStatus.OK);
+
+        return ResponseEntity.ok().body(playService.newPlay());
+    }
 
     @GetMapping("/newgame{playId}")
     public ResponseEntity<UUID> newGame(@PathVariable String playId) throws InterruptedException {

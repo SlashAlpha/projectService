@@ -1,12 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
 import {Card} from "../model/Card";
 import {Play} from "../model/play";
 import {PlayerDTO} from "../model/playerDTO";
-import {CardsComponent} from "../cards/cards.component";
-import {FormsModule} from "@angular/forms";
 import {ApiService} from "../shared/api.service";
-import {Player} from "../model/player";
 
 @Component({
   selector: 'app-poker',
@@ -16,15 +12,15 @@ import {Player} from "../model/player";
 export class PokerComponent implements OnInit {
   players:PlayerDTO[]=[];
 
-  Player = {
-    id:'',
-    name:'',
-    age:0,
-    bank:0
+  player = {
+    id: '',
+    name: '',
+    age: 0,
+    bank: 0
   };
 
-  playerDTO:PlayerDTO=new PlayerDTO("","",0,0,0,new Card("",0,0,"",0),new Card("",0,0,"",0))
-   playId:Play=new Play("");
+  playerDTO: PlayerDTO = new PlayerDTO("", "", 0, 0, 0, new Card("", 0, 0, "", 0), new Card("", 0, 0, "", 0));
+  playId: Play = new Play("");
   playersId:PlayerDTO[]=[];
 
 
@@ -57,14 +53,15 @@ export class PokerComponent implements OnInit {
   //
   // }
 
-  registerPlayer():void{
-   this.apiService.registerPlayer(this.Player).subscribe(res=>{
-      this.Player=res;
+  registerPlayer():void {
+    this.apiService.registerPlayer(this.player).subscribe(res => {
+      this.player = res;
       alert(res);
 
-   },err => {
-     alert("An error has occured registering the player");
-   });;
+    }, err => {
+      alert("An error has occured registering the player");
+    });
+    ;
   }
 
 
