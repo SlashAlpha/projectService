@@ -19,8 +19,11 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/blackjack">BlackJack</a>
       </li>
-      <li *ngIf="!router.url.includes('login')" class="nav-item">
-        <a class="nav-link" id="login" routerLink="/login">Login/Signup</a>
+      <li *ngIf="!router.url.includes('login') && !router.url.includes('signup')" class="nav-item">
+        <a class="nav-link" id="login" routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="!router.url.includes('signup') && !router.url.includes('login')" class="nav-item">
+        <a class="nav-link" id="signup" routerLink="/signup">Signup</a>
       </li>
     </ul>
   </div>

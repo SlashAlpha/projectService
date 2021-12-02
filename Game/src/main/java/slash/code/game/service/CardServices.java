@@ -44,7 +44,7 @@ public class CardServices implements CardService{
 
     @Override
     public Card getOnePokerCard() {
-        Card card = restTemplate.exchange(RIVER_PATH_2, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenDto()), Card.class).getBody();
+        Card card = restTemplate.exchange(RIVER_PATH_2, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenFromDealer()), Card.class).getBody();
 
         //    restTemplate.getForObject(CARD_PATH_V1, Card.class);
         assert card != null;
@@ -57,7 +57,7 @@ public class CardServices implements CardService{
     public List<Card> firstWaveRiverCards() {
         List<Card>cardsList=new ArrayList<>();
         for(int i=0;i<3;i++){
-            Card[] cards = restTemplate.exchange(RIVER_PATH_1, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenDto()), Card[].class).getBody();
+            Card[] cards = restTemplate.exchange(RIVER_PATH_1, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenFromDealer()), Card[].class).getBody();
 
             for (Card card : Objects.requireNonNull(cards)
             ) {
@@ -74,7 +74,7 @@ public class CardServices implements CardService{
     @Override
     public Card secondWaveRiverCards() {
 
-        Card card = restTemplate.exchange(RIVER_PATH_2, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenDto()), Card.class).getBody();
+        Card card = restTemplate.exchange(RIVER_PATH_2, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenFromDealer()), Card.class).getBody();
 
         restTemplate.getForObject(RIVER_PATH_2, Card.class);
         cardRepository.save(card);
@@ -84,7 +84,7 @@ public class CardServices implements CardService{
 
     @Override
     public Card thirdWaveRiverCards() {
-        Card card = restTemplate.exchange(RIVER_PATH_3, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenDto()), Card.class).getBody();
+        Card card = restTemplate.exchange(RIVER_PATH_3, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenFromDealer()), Card.class).getBody();
 
         cardRepository.save(card);
         return card;
@@ -95,7 +95,7 @@ public class CardServices implements CardService{
         System.out.println(playerId);
         List<Card> cardList = new ArrayList<>();
         String path = playerId.toString();
-        ResponseEntity<Card[]> cards = restTemplate.exchange(PLAYER_PATH + path, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenDto()), Card[].class);
+        ResponseEntity<Card[]> cards = restTemplate.exchange(PLAYER_PATH + path, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenFromDealer()), Card[].class);
         restTemplate.getForObject(PLAYER_PATH + path, Card[].class);
         for (Card card : Objects.requireNonNull(cards.getBody())
         ) {

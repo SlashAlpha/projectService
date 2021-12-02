@@ -57,7 +57,7 @@ public class GameServices implements GameService{
     @Override
     public Game blindToPlayers(Game game, List<Player>players) {
 
-        Integer blind = restTemplate.exchange(BLIND_PATH, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenDto()), Integer.class).getBody();
+        Integer blind = restTemplate.exchange(BLIND_PATH, HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(SecurityUti.getTokenFromDealer()), Integer.class).getBody();
 
         restTemplate.getForObject(BLIND_PATH, Integer.class);
         playerService.setBlind(players, blind);

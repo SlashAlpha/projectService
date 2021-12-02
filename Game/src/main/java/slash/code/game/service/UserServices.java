@@ -1,8 +1,8 @@
 package slash.code.game.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -114,9 +114,12 @@ public class UserServices implements UserService, UserDetailsService {
         ResponseEntity tokenDto = restTemplate.exchange(LOGIN_PATH, HttpMethod.POST, request, String.class);
         String accessToken = tokenDto.getBody().toString();
         Gson gson = new Gson();
-        JsonObject jsonObject = new JsonParser().parse(accessToken).getAsJsonObject();
-        TokenDto tokens = new TokenDto(jsonObject.get("accessToken").toString().replaceAll("^\"+|\"+$", ""), jsonObject.get("refreshToken").toString());
-        SecurityUti.setTokenDto(tokens);
+        //    JsonObject jsonObject = new JsonParser().parse(accessToken).getAsJsonObject();
+        JsonElement element = SecurityUti.parse(accessToken);
+        JsonObject object = element.getAsJsonObject();
+
+        TokenDto tokens = new TokenDto(object.get("accessToken").toString().replaceAll("^\"+|\"+$", ""), object.get("refreshToken").toString());
+        SecurityUti.setTokenFromDealer(tokens);
         ResponseEntity<String> refreshToken = restTemplate.exchange("http://localhost:8080/api/v1/auth/refreshtoken", HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(tokens), String.class);
         System.out.println("new Refresh token " + refreshToken.getBody());
 

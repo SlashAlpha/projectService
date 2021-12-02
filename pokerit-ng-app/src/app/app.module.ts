@@ -13,6 +13,7 @@ import {IndexComponent} from './index/index.component';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {LoginComponent} from './login/login.component';
+import {RegisterComponent} from './register/register.component';
 
 const appRoutes: Routes = [
     {
@@ -30,6 +31,9 @@ const appRoutes: Routes = [
     }, {
       path: "login",
       component: LoginComponent
+    }, {
+      path: "signup",
+      component: RegisterComponent
     }, {
       path: '',
       component: IndexComponent
@@ -50,7 +54,8 @@ const appRoutes: Routes = [
     PokerComponent,
     BlackJackComponent,
     IndexComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

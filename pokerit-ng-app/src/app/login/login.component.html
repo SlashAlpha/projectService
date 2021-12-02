@@ -5,44 +5,37 @@
       <form #f="ngForm" (ngSubmit)="loginUser()" class="feedback-form" name="form" novalidate>
         <!-- Name -->
         <div class="form-group">
-          <label for="name"> Name</label>
+          <label for="email"> Email</label>
           <input [(ngModel)]="login.email"
                  class="form-control"
-                 id="name"
-                 name="name"
-                 placeholder="Your name"
+                 id="email"
+                 name="email"
+                 placeholder="Your email"
                  required
-
-
                  type="text"/>
           <!-- input validation group -->
-          <div class="invalid-input">
-            <!-- individual validation errors -->
-            <div>Field is required</div>
-          </div>
-        </div>
-        <!-- Email -->
-        <div class="form-group">
-          <label for="password">Age</label>
-          <input [(ngModel)]="login.password"
-                 class="form-control"
-                 email
-                 id="password"
-                 name="age"
-                 placeholder="Your age"
 
-
-                 required type="password"/>
-          <!-- input validation group -->
-
-
-          <button class="btn btn-info pull-right" type="submit">
-            <i class="fa fa-envelope-o"></i>
-            <span> Send Feedback</span>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input [(ngModel)]="login.password"
+                   class="form-control"
+                   id="password"
+                   name="password"
+                   placeholder="Your password"
+                   required
+                   type="password"/></div>
+          <br>
+          <button class="btn btn-info" type="submit">
+            <i class="fa fa-android"></i>
+            <span> Login</span>
           </button>
 
         </div>
         <div class="offset-3"></div>
-
+      </form>
+    </div>
+  </div>
+</div>
 
 

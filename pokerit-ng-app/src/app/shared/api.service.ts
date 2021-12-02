@@ -7,6 +7,7 @@ import {Player} from "../model/player";
 import {Token} from "../model/Token";
 
 import {LoginUser} from "../model/login-user";
+import {User} from "../model/User";
 
 
 @Injectable({
@@ -80,6 +81,12 @@ export class ApiService {
 
     return this.http.post(this.NEW_PLAYER + this.play.id, player)
 
+
+  }
+
+  registerUser(user: User) {
+
+    this.http
 
   }
 
