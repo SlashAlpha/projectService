@@ -1,9 +1,8 @@
 package slash.code.dealer.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -80,11 +79,11 @@ public class UserServices implements UserService, UserDetailsService {
         userSecurity.add("email", email);
         userSecurity.add("password", passW);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(userSecurity, headers);
-        System.out.println(email + " " + passW);
+        //  System.out.println(email + " " + passW);
         ResponseEntity response = restTemplate.exchange(LOGIN_PATH, HttpMethod.POST, request, String.class);
         String accessToken = response.getBody().toString();
-        Gson gson = new Gson();
-        JsonObject jsonObject = new JsonParser().parse(accessToken).getAsJsonObject();
+        JsonElement element = SecurityUti.parse(accessToken);
+        JsonObject jsonObject = element.getAsJsonObject();
         TokenDto tokens = new TokenDto(jsonObject.get("accessToken").toString().replaceAll("^\"+|\"+$", ""), jsonObject.get("refreshToken").toString());
         System.out.println(tokens);
         SecurityUti.pokerToken = tokens.getAccessToken();
@@ -98,12 +97,13 @@ public class UserServices implements UserService, UserDetailsService {
         passW = SecurityUti.apiUser(2)[userPass];
         System.out.println("new user=  email : " + email + " pass : " + passW);
         userDealer = new User(email, passwordEncoder.encode(passW), userPoker.getRoles());
+
         jmsTemplate.convertAndSend(JmsConfig.DEALER_AUTHENTICATION, userMail + "-" + userPass);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", "Bearer " + tokens.getAccessToken());
         HttpEntity entity = new HttpEntity(httpHeaders);
         ResponseEntity<String> refreshToken = restTemplate.exchange("http://localhost:8081/api/v1/auth/refreshtoken", HttpMethod.GET, entity, String.class);
-        System.out.println("new Refresh token " + refreshToken.getBody());
+        //  System.out.println("new Refresh token " + refreshToken.getBody());
     }
 
     @Override

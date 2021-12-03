@@ -1,6 +1,5 @@
 package slash.code.game.service;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
@@ -110,10 +109,10 @@ public class UserServices implements UserService, UserDetailsService {
         userSecurity.add("email", email);
         userSecurity.add("password", passW);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(userSecurity, headers);
-        System.out.println(email + " " + passW);
+       // System.out.println(email + " " + passW);
         ResponseEntity tokenDto = restTemplate.exchange(LOGIN_PATH, HttpMethod.POST, request, String.class);
         String accessToken = tokenDto.getBody().toString();
-        Gson gson = new Gson();
+
         //    JsonObject jsonObject = new JsonParser().parse(accessToken).getAsJsonObject();
         JsonElement element = SecurityUti.parse(accessToken);
         JsonObject object = element.getAsJsonObject();
@@ -121,7 +120,7 @@ public class UserServices implements UserService, UserDetailsService {
         TokenDto tokens = new TokenDto(object.get("accessToken").toString().replaceAll("^\"+|\"+$", ""), object.get("refreshToken").toString());
         SecurityUti.setTokenFromDealer(tokens);
         ResponseEntity<String> refreshToken = restTemplate.exchange("http://localhost:8080/api/v1/auth/refreshtoken", HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(tokens), String.class);
-        System.out.println("new Refresh token " + refreshToken.getBody());
+        // System.out.println("new Refresh token " + refreshToken.getBody());
 
 
     }

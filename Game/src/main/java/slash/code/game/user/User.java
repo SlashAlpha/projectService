@@ -8,6 +8,7 @@ import slash.code.game.model.BaseEntity;
 import slash.code.game.model.Player;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +25,8 @@ public class User extends BaseEntity {
     String firstName;
     String lastName;
     String email;
+    LocalDate dateOfBirth;
+    Integer phoneNumber;
     String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
