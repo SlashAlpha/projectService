@@ -5,15 +5,17 @@ export class User {
   firstName: string;
   lastName: string;
   phoneNumber: string
-  age: number;
+  dateOfBirth: Date;
 
 
-  constructor(email: string, password: string, firstName: string, lastName: string, phoneNumber: string, age: number) {
+  constructor(email: string, password: string, firstName: string, lastName: string, phoneNumber: string, dateOfBirth: Date) {
     this.email = email;
     this.password = password;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
-    this.age = age;
+    this.dateOfBirth = dateOfBirth;
   }
+
+
 }

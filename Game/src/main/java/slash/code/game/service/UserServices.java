@@ -120,7 +120,7 @@ public class UserServices implements UserService, UserDetailsService {
         TokenDto tokens = new TokenDto(object.get("accessToken").toString().replaceAll("^\"+|\"+$", ""), object.get("refreshToken").toString());
         SecurityUti.setTokenFromDealer(tokens);
         ResponseEntity<String> refreshToken = restTemplate.exchange("http://localhost:8080/api/v1/auth/refreshtoken", HttpMethod.GET, SecurityUti.restEntityTokenedHeaders(tokens), String.class);
-        // System.out.println("new Refresh token " + refreshToken.getBody());
+       // System.out.println("new Refresh token " + refreshToken.getBody());
 
 
     }

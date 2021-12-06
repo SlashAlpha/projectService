@@ -2,7 +2,7 @@
   <div class="row">
 
     <div class="col-md-6">
-      <form #f="ngForm" class="feedback-form" name="form" novalidate>
+      <form #f="ngForm" (ngSubmit)="registerUser()" class="feedback-form" name="form" novalidate>
         <!-- Name -->
         <div class="form-group">
           <label for="email"> Email</label>
@@ -10,6 +10,7 @@
             class="form-control"
             id="email"
             name="email"
+            [(ngModel)]="user.email"
             placeholder="Your email"
             required
             type="text"/>
@@ -22,6 +23,7 @@
             class="form-control"
             id="password"
             name="password"
+            [(ngModel)]="user.password"
             placeholder="Your password"
             required
             type="password"/></div>
@@ -31,6 +33,7 @@
             class="form-control"
             id="firstname"
             name="firstname"
+            [(ngModel)]="user.firstName"
             placeholder="Your Firstname"
             required
             type="text"/>
@@ -38,23 +41,36 @@
 
           <!-- Email --></div>
         <div class="form-group">
-          <label for="firstname"> LastName</label>
+          <label for="lastname"> LastName</label>
           <input
             class="form-control"
             id="lastname"
             name="lastname"
+            [(ngModel)]="user.lastName"
             placeholder="Your Lastname"
             required
-            type="text"/>
+            type="text"/></div>
+        <div class="form-group">
+          <label for="email"> Phone Number</label>
+          <input
+            [(ngModel)]="user.phoneNumber"
+            class="form-control"
+            id="phone"
+            name="phoneNumber"
+            placeholder="Your Phone Number"
+            required
+            type="number"/>
           <!-- input validation group -->
 
           <!-- Email --></div>
+
         <div class="form-group">
           <label for="firstname">Date of Birth</label>
           <input
             class="form-control"
             id="dob"
             name="dob"
+            [(ngModel)]="user.dateOfBirth"
             placeholder="Your Date Of Birth"
             required
             type="date"/>
@@ -62,7 +78,7 @@
 
           <!-- Email --></div>
         <br>
-        <button class="btn btn-info" type="submit">
+        <button (click)="registerUser()" class="btn btn-info pull-right" routerLink="/index" type="submit">
           <i class="fa fa-android"></i>
           <span> Register</span>
         </button>

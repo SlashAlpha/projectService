@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(private apiService: ApiService) {
-    this.user = new User("", "", "", "", "", 0);
+    this.user = new User("", "", "", "", "", new Date());
     this.login = new LoginUser("", "");
   }
 

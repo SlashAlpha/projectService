@@ -41,7 +41,7 @@ public class AuthController {
     @PostMapping("/newuser")
     public ResponseEntity<User> newUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/auth/newuser").toUriString());
-
+        log.info("new User :" + user.getEmail());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
         //   return new ResponseEntity<List<User>>(userService.getUsers(), HttpStatus.OK);
     }

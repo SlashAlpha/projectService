@@ -34,7 +34,7 @@ export class ApiService {
   private NEW_PLAY = this.BASE_URL + "/poker/newplay";
   //user
   private LOGIN = "http://localhost:8081/api/login"
-  private NEW_USER = this.BASE_URL + "/auth/newuser"
+  private NEW_USER = "http://localhost:8081/api/v1/auth/newuser"
   //players
   private PLAYERS = this.BASE_URL + "/players/getplayers/";
 
@@ -86,7 +86,15 @@ export class ApiService {
 
   registerUser(user: User) {
 
-    this.http
+
+    this.http.post<User>("http://localhost:8081/api/v1/auth/newuser", user).subscribe(
+      res => {
+        alert("congrats & welcome");
+      }, error => {
+        alert(error)
+      }
+    );
+
 
   }
 

@@ -17,7 +17,6 @@ import slash.code.game.config.security.filters.CustomAuthenticationFilter;
 import slash.code.game.config.security.filters.CustomAuthorizationFilter;
 
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
@@ -34,9 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/v1/auth/refreshtoken/**").permitAll();
-        http.authorizeRequests().antMatchers(POST, "/api/v1/auth/newuser").permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**", "/api/v1/auth/refreshtoken/**", "/api/v1/auth/newuser/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/v1/auth/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
