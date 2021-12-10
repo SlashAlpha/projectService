@@ -8,13 +8,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LocalHostRouteConfig {
 
+
     @Bean
     public RouteLocator localHostRouter(RouteLocatorBuilder builder){
             return builder.routes()
-                    .route(r->r.path("/api/v1/dealer/pokerCard")
-                    .uri("http://localhost:8080"))
-                    .route(r->r.path("/api/v1/dealer/blackJackCard")
-                    .uri("http://localhost:8080"))
+                    .route(r -> r.path("/api/game/login")
+                            .uri("http://localhost:8081/api/login"))
+                    .route(r -> r.path("/api/v1/auth/newuser")
+                            .uri("http://localhost:8081"))
 
                     .build();
 

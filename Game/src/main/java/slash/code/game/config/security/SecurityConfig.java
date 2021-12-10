@@ -35,7 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/v1/auth/refreshtoken/**", "/api/v1/auth/newuser/**").permitAll();
+        http.authorizeRequests().antMatchers(
+                "/api/login/**",
+                "/api/v1/auth/refreshtoken/**",
+                "/api/v1/auth/newuser/**",
+                "/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                // "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/v1/auth/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);

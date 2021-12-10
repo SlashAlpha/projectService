@@ -1,0 +1,6 @@
+spring:
+  spring:
+    datasource:
+      url: jdbc:postgresql://localhost:5432/postgres
+      platform: postgres
+      schema: dealer

@@ -6,6 +6,7 @@
         <option value="$PROJECT_DIR$/Game/pom.xml" />
         <option value="$PROJECT_DIR$/Dealer/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Eureka/pom.xml" />
       </list>
     </option>
   </component>
